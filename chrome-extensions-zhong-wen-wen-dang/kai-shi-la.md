@@ -282,3 +282,129 @@ function setPageBackgroundColor() {
 ```
 {% endcode %}
 
+上述代码为按钮添加了一个能够触发content脚本注入的监听函数。脚本会让页面的背景颜色修改为和button一样的颜色。使用编程式注入允许用户调用content脚本，而不是自动注入一些并不需要的代码到页面中。
+
+mainfest需要添加`activeTab`权限来允许插件短暂的访问当前页面，同样的需要添加`scripting`权限来调用脚本API的`executeScript`方法。
+
+{% code title="manifest.json" %}
+```json
+{
+  "name": "Getting Started Example",
+  ...
+  "permissions": ["storage", "activeTab", "scripting"],
+  ...
+}
+```
+{% endcode %}
+
+现在插件已经功能齐全啦，重新载入一下插件并刷新页面。点击脚本按钮打开popup页面并点击其中的按钮，页面就绿啦！你不喜欢绿色也可以换成其他的颜色。
+
+{% hint style="danger" %}
+陷阱
+
+插件不能再Chrome原生页面进行注入脚本，所以你在类似chrome://extensions页面点击按钮是没有效果的。请确保你在一个真正的web页面上进行插件的触发。
+{% endhint %}
+
+## 添加用户选项
+
+现在咱们的插件仅允许用户将页面北京改成绿色的。在这个基础上加一个选项页面，可以给用户更多的操控权限，更多的客制化他们的浏览体验。
+
+那么我们可以先在目录下创建一个`options.html`的文件，包含如下代码。
+
+{% code title="options.html" %}
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="button.css">
+  </head>
+  <body>
+    <div id="buttonDiv">
+    </div>
+    <div>
+      <p>Choose a different background color!</p>
+    </div>
+  </body>
+  <script src="options.js"></script>
+</html>
+```
+{% endcode %}
+
+添加完后，记得在manifest文件中加上这个页面。
+
+```json
+{
+  "name": "Getting Started Example",
+  ...
+  "options_page": "options.html"
+}
+```
+
+重新载入程序后，右键咱们的插件图标选择**Options**选项。
+
+或者你也可以在查看插件细节的页面底部找到**Extension options**选项。
+
+最后一步就是加上可选择的选项，先在根目录创建一个options.js文件，加入如下代码。
+
+```javascript
+let page = document.getElementById("buttonDiv");
+let selectedClassName = "current";
+const presetButtonColors = ["#3aa757", "#e8453c", "#f9bb2d", "#4688f1"];
+
+// Reacts to a button click by marking the selected button and saving
+// the selection
+function handleButtonClick(event) {
+  // Remove styling from the previously selected color
+  let current = event.target.parentElement.querySelector(
+    `.${selectedClassName}`
+  );
+  if (current && current !== event.target) {
+    current.classList.remove(selectedClassName);
+  }
+
+  // Mark the button as selected
+  let color = event.target.dataset.color;
+  event.target.classList.add(selectedClassName);
+  chrome.storage.sync.set({ color });
+}
+
+// Add a button to the page for each supplied color
+function constructOptions(buttonColors) {
+  chrome.storage.sync.get("color", (data) => {
+    let currentColor = data.color;
+    // For each color we were provided…
+    for (let buttonColor of buttonColors) {
+      // …create a button with that color…
+      let button = document.createElement("button");
+      button.dataset.color = buttonColor;
+      button.style.backgroundColor = buttonColor;
+
+      // …mark the currently selected color…
+      if (buttonColor === currentColor) {
+        button.classList.add(selectedClassName);
+      }
+
+      // …and register a listener for when that button is clicked
+      button.addEventListener("click", handleButtonClick);
+      page.appendChild(button);
+    }
+  });
+}
+
+// Initialize the page by constructing the color options
+constructOptions(presetButtonColors);
+```
+
+重新载入插件后，我们就有4种颜色可以选择啦。当我们点击按钮后，脚本会在插件存储中更新color的值。因为所有的插件文件都是从存储总获取颜色的，所以不用更新其他的值。
+
+## 迈出下一步
+
+恭喜你！现在这个目录下的有一个全功能的、非常简单的Chrome插件啦！
+
+那么下一步要做什么呢？
+
+* 你可以读一读**Chrome插件综述**，这里有插件的结构信息和一些开发者需要熟悉的具体概念。
+* 在**调试之旅**中学习调试插件的方式。
+* Chrome插件可以访问比打开一个页面更强力的API。**chrome.\*API文档**中将会讲解每一个API。
+* **开发者指南**中有数十个关于高级插件创建的相关文档。
+
