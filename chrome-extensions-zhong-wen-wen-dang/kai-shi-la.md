@@ -33,7 +33,7 @@
 2. 打开开发者模式开关
 3. 点击加载已解压程序
 
-![](../.gitbook/assets/image.png)
+![](<../.gitbook/assets/image (1).png>)
 
 好的兄弟们，这个插件咱就装完了。因为插件的manifest.json里没写头像路径，所以就给咱用首字母自动生成了一个头像。
 
@@ -99,7 +99,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 我们回到插件管理页面，重新载入插件后（每次对插件的修改都需要重新载入一下），下面就出现了一个查看视图的链接，点击之后会打开一个控制台（如果你的插件没有background页面的话），里面打印了一行log`Default background color set to green`。
 
-![](<../.gitbook/assets/image (3).png>)
+![](<../.gitbook/assets/image (3) (1).png>)
 
 ## 介绍一个用户界面
 
@@ -224,7 +224,7 @@ button.current {
 
 进行到这步了，我们重新载入一下插件，就可以看到页面展示了我们的插件图标而非默认图标，点击图标后会有一个popup页面弹出，里面有一个按钮展示了默认情况下的颜色。
 
-![](<../.gitbook/assets/image (1).png>)
+![](<../.gitbook/assets/image (1) (1).png>)
 
 popup UI的最后一步就是添加颜色到按钮上去，在目录下创建一个名为`popup.js`的文件，并将如下代码添加到文件中。
 
