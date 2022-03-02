@@ -16,7 +16,7 @@
     * [🐱 什么是主题？](chrome-extensions-zhong-wen-wen-dang/gai-shu/shi-mo-shi-zhu-ti.md)
   * [🐼 API 参考](chrome-extensions-zhong-wen-wen-dang/api-can-kao/README.md)
     * [🐵 accessibilityFeatures](chrome-extensions-zhong-wen-wen-dang/api-can-kao/accessibilityfeatures.md)
-    * [🐵 action](chrome-extensions-zhong-wen-wen-dang/api-can-kao/action.md)
+    * [🐵 chrome.action](chrome-extensions-zhong-wen-wen-dang/api-can-kao/chrome.action.md)
   * [🐼 开发插件和主题](chrome-extensions-zhong-wen-wen-dang/kai-fa-cha-jian-he-zhu-ti/README.md)
     * [🐨 插件开发综述](chrome-extensions-zhong-wen-wen-dang/kai-fa-cha-jian-he-zhu-ti/cha-jian-kai-fa-zong-shu.md)
     * [🐨 Manifest文件格式](chrome-extensions-zhong-wen-wen-dang/kai-fa-cha-jian-he-zhu-ti/manifest-wen-jian-ge-shi.md)
